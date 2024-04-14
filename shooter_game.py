@@ -4,7 +4,7 @@ from time import time as timer #импортируем функцию для з�
 #подгружаем отдельно функции для работы со шрифтом
 font.init()
 font1 = font.SysFont('Arial', 80)
-win = font1.render('YOU WIN!', True, (255, 255, 255))
+win = font1.render('YOU WIN VERY GOOD!', True, (255, 255, 255))
 lose = font1.render('YOU LOSE!', True, (180, 0, 0))
 
 
