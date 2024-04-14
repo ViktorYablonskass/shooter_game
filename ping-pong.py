@@ -142,90 +142,90 @@ while run:
                         rel_time = True #ставим флаг перезарядки
                 
    #сама игра: действия спрайтов, проверка правил игры, перерисовка
-if not finish:
-    #обновляем фон
-    window.blit(background,(0,0))
+    if not finish:
+        #обновляем фон
+        window.blit(background,(0,0))
 
 
-    #производим движения спрайтов
-    ship.update()
-    monsters.update()
-    asteroids.update()
-    bullets.update()
+        #производим движения спрайтов
+        ship.update()
+        monsters.update()
+        asteroids.update()
+        bullets.update()
 
 
-    #обновляем их в новом местоположении при каждой итерации цикла
-    ship.reset()
-    monsters.draw(window)
-    asteroids.draw(window)
-    bullets.draw(window)
+        #обновляем их в новом местоположении при каждой итерации цикла
+        ship.reset()
+        monsters.draw(window)
+        asteroids.draw(window)
+        bullets.draw(window)
 
 
-    #перезарядка
-    if rel_time == True:
-        now_time = timer() #считываем время
-    
-        if now_time - last_time < 3: #пока не прошло 3 секунды выводим информацию о перезарядке
-            reload = font2.render('Wait, reload...', 1, (150, 0, 0))
-            window.blit(reload, (260, 460))
-        else:
-            num_fire = 0   #обнуляем счётчик пуль
-            rel_time = False #сбрасываем флаг перезарядки
+        #перезарядка
+        if rel_time == True:
+            now_time = timer() #считываем время
+
+            if now_time - last_time < 3: #пока не прошло 3 секунды выводим информацию о перезарядке
+                reload = font2.render('Wait, reload...', 1, (150, 0, 0))
+                window.blit(reload, (260, 460))
+            else:
+                num_fire = 0   #обнуляем счётчик пуль
+                rel_time = False #сбрасываем флаг перезарядки
 
 
-    #проверка столкновения пули и монстров (и монстр, и пуля при касании исчезают)
-    collides = sprite.groupcollide(monsters, bullets, True, True)
-    for c in collides:
-        #этот цикл повторится столько раз, сколько монстров подбито
-        score = score + 1
-        monster = Enemy(img_enemy, randint(80, win_width - 80), -40, 80, 50, randint(1, 5))
-        monsters.add(monster)
+        #проверка столкновения пули и монстров (и монстр, и пуля при касании исчезают)
+        collides = sprite.groupcollide(monsters, bullets, True, True)
+        for c in collides:
+            #этот цикл повторится столько раз, сколько монстров подбито
+            score = score + 1
+            monster = Enemy(img_enemy, randint(80, win_width - 80), -40, 80, 50, randint(1, 5))
+            monsters.add(monster)
 
 
-    #если спрайт коснулся врага, уменьшает жизнь
-    if sprite.spritecollide(ship, monsters, False) or sprite.spritecollide(ship, asteroids, False):
-        sprite.spritecollide(ship, monsters, True)
-        sprite.spritecollide(ship, asteroids, True)
-        life = life -1
+        #если спрайт коснулся врага, уменьшает жизнь
+        if sprite.spritecollide(ship, monsters, False) or sprite.spritecollide(ship, asteroids, False):
+            sprite.spritecollide(ship, monsters, True)
+            sprite.spritecollide(ship, asteroids, True)
+            life = life -1
 
 
-    #проигрыш
-    if life == 0 or lost >= max_lost:
-        finish = True #проиграли, ставим фон и больше не управляем спрайтами.
-        window.blit(lose, (200, 200))
+        #проигрыш
+        if life == 0 or lost >= max_lost:
+            finish = True #проиграли, ставим фон и больше не управляем спрайтами.
+            window.blit(lose, (200, 200))
 
 
 
 
-    #проверка выигрыша: сколько очков набрали?
-    if score >= goal:
-        finish = True
-        window.blit(win, (200, 200))
+        #проверка выигрыша: сколько очков набрали?
+        if score >= goal:
+            finish = True
+            window.blit(win, (200, 200))
 
 
-    #пишем текст на экране
-    text = font2.render("Счет: " + str(score), 1, (255, 255, 255))
-    window.blit(text, (10, 20))
+        #пишем текст на экране
+        text = font2.render("Счет: " + str(score), 1, (255, 255, 255))
+        window.blit(text, (10, 20))
 
 
-    text_lose = font2.render("Пропущено: " + str(lost), 1, (255, 255, 255))
-    window.blit(text_lose, (10, 50))
+        text_lose = font2.render("Пропущено: " + str(lost), 1, (255, 255, 255))
+        window.blit(text_lose, (10, 50))
 
 
-    #задаём разный цвет в зависимости от количества жизней
-    if life == 3:
-        life_color = (0, 150, 0)
-    if life == 2:
-        life_color = (150, 150, 0)
-    if life == 1:
-        life_color = (150, 0, 0)
+        #задаём разный цвет в зависимости от количества жизней
+        if life == 3:
+            life_color = (0, 150, 0)
+        if life == 2:
+            life_color = (150, 150, 0)
+        if life == 1:
+            life_color = (150, 0, 0)
 
 
-    text_life = font1.render(str(life), 1, life_color)
-    window.blit(text_life, (650, 10))
+        text_life = font1.render(str(life), 1, life_color)
+        window.blit(text_life, (650, 10))
 
 
-    display.update()
+        display.update()
 
 
-    time.delay(50)
+        time.delay(50)
